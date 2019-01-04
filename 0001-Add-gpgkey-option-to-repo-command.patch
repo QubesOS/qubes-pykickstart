@@ -1,0 +1,49 @@
+From c31c9526fafc0ef367121b8fad6151e047bba40e Mon Sep 17 00:00:00 2001
+From: fepitre <frederic.epitre@orange.fr>
+Date: Thu, 27 Sep 2018 08:49:35 +0200
+Subject: [PATCH 1/1] Add --gpgkey option to repo command.
+
+This will be used to verify packages by pungi, which have no other way to get
+key location (no real .repo files).
+
+Rework of the original patch done by Marek Marczykowski <marmarek@invisiblethingslab.com>
+---
+ pykickstart/commands/repo.py | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/pykickstart/commands/repo.py b/pykickstart/commands/repo.py
+index 1941f83..29a0274 100644
+--- a/pykickstart/commands/repo.py
++++ b/pykickstart/commands/repo.py
+@@ -143,6 +143,7 @@ class F21_RepoData(F15_RepoData):
+     def __init__(self, *args, **kwargs):
+         F15_RepoData.__init__(self, *args, **kwargs)
+         self.install = kwargs.get("install", False)
++        self.gpgkey = kwargs.get("gpgkey", "")
+ 
+     def _getArgsAsStr(self):
+         retval = F15_RepoData._getArgsAsStr(self)
+@@ -150,6 +151,9 @@ class F21_RepoData(F15_RepoData):
+         if self.install:
+             retval += " --install"
+ 
++        if self.gpgkey:
++            retval += " --gpgkey=\"%s\"" % self.gpgkey
++
+         return retval
+ 
+ class F27_RepoData(F21_RepoData):
+@@ -393,6 +397,10 @@ class F21_Repo(F15_Repo):
+                         default=False, help="""
+                         Install this repository to the target system so that it
+                         can be used after reboot.""")
++        op.add_argument("--gpgkey", action="store", version=F21,
++                        help="""
++                        This will be used to verify packages by pungi,
++                        which have no other way to get key location.""")
+         return op
+ 
+ class F27_Repo(F21_Repo):
+-- 
+2.17.1
+
