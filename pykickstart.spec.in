@@ -15,6 +15,7 @@ Url:       http://fedoraproject.org/wiki/pykickstart
 # within this srpm.
 Source0: %{name}-%{version}.tar.gz
 Patch0: 0001-Add-gpgkey-option-to-repo-command.patch
+Patch1: 0001-round-part-size-parameter.patch
 BuildArch: noarch
 
 BuildRequires: gettext
@@ -45,6 +46,7 @@ the pykickstart package.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 make PYTHON=%{__python3}
