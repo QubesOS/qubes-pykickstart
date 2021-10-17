@@ -18,6 +18,7 @@ Patch0: 0001-Add-gpgkey-option-to-repo-command.patch
 Patch1: 0001-round-part-size-parameter.patch
 BuildArch: noarch
 
+BuildRequires: make
 BuildRequires: gettext
 BuildRequires: python3-coverage
 BuildRequires: python3-devel
