@@ -2,7 +2,7 @@ DIST ?= fc33
 VERSION := $(file <version)
 REL := $(file <rel)
 
-FEDORA_SOURCES := https://src.fedoraproject.org/rpms/pykickstart/raw/f$(subst fc,,$(DIST))/f/sources
+FEDORA_SOURCES := https://src.fedoraproject.org/rpms/pykickstart/raw/$(if $(filter-out rawhide main,$(DIST)),f$(subst fc,,$(DIST)),main)/f/sources
 FEDORA_REL ?= $(REL)
 SRC_FILE := pykickstart-$(VERSION).tar.gz
 
