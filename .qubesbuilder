@@ -1,0 +1,8 @@
+host:
+  rpm:
+    spec:
+    - pykickstart.spec
+source:
+  files:
+  - url: https://ftp.qubes-os.org/distfiles/pykickstart-3.24.tar.gz
+    sha512: pykickstart-3.24.tar.gz.sha512
