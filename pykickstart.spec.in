@@ -19,14 +19,16 @@ Patch1: 0001-round-part-size-parameter.patch
 BuildArch: noarch
 
 BuildRequires: gettext
-BuildRequires: python3-coverage
 BuildRequires: python3-devel
-BuildRequires: python3-nose
-BuildRequires: python3-ordered-set
 BuildRequires: python3-requests
 BuildRequires: python3-setuptools
-BuildRequires: python3-six
+BuildRequires: make
+
+# Only required when building with runtests
+%if %{with runtests}
+BuildRequires: python3-coverage
 BuildRequires: python3-sphinx
+%endif
 
 Requires: python3-kickstart = %{epoch}:%{version}-%{release}
 
@@ -35,9 +37,7 @@ Python utilities for manipulating kickstart files.
 
 %package -n python3-kickstart
 Summary:  Python 3 library for manipulating kickstart files.
-Requires: python3-six
 Requires: python3-requests
-Requires: python3-ordered-set
 
 %description -n python3-kickstart
 Python 3 library for manipulating kickstart files.  The binaries are found in
