@@ -2,31 +2,35 @@
 # at the moment, but can run locally.  To build and run tests, do:
 #     rpmbuild -ba --with runtests pykickstart.spec
 %bcond_with runtests
+%bcond_with signed
 
 Name:      pykickstart
 Version:   @VERSION@
 Release:   @REL@%{?dist}
 Epoch: 1000
-License:   GPLv2 and MIT
+License:   GPL-2.0-only
 Summary:   Python utilities for manipulating kickstart files.
 Url:       http://fedoraproject.org/wiki/pykickstart
-# This is a Red Hat maintained package which is specific to
-# our distribution.  Thus the source is only available from
-# within this srpm.
-Source0: %{name}-%{version}.tar.gz
-Patch0: 0001-Add-gpgkey-option-to-repo-command.patch
+Source0:   https://github.com/pykickstart/%{name}/releases/download/r%{version}/%{name}-%{version}.tar.gz
+%if %{with signed}
+Source1:   https://github.com/pykickstart/%{name}/releases/download/r%{version}/%{name}-%{version}.tar.gz.asc
+%endif
+Patch0: 0001-older-setuptools.patch
 Patch1: 0001-round-part-size-parameter.patch
+
 BuildArch: noarch
 
 BuildRequires: gettext
 BuildRequires: python3-devel
 BuildRequires: python3-requests
 BuildRequires: python3-setuptools
+BuildRequires: python3-pip
+BuildRequires: python3-wheel
 BuildRequires: make
+BuildRequires: git
 
 # Only required when building with runtests
 %if %{with runtests}
-BuildRequires: python3-coverage
 BuildRequires: python3-sphinx
 %endif
 
@@ -44,9 +48,7 @@ Python 3 library for manipulating kickstart files.  The binaries are found in
 the pykickstart package.
 
 %prep
-%setup -q
-%patch0 -p1
-%patch1 -p1
+%autosetup -p1
 
 %build
 make PYTHON=%{__python3}
@@ -56,7 +58,7 @@ make PYTHON=%{__python3} DESTDIR=%{buildroot} install
 
 %check
 %if %{with runtests}
-make PYTHON=%{__python3} test
+LC_ALL=C make PYTHON=%{__python3} test-no-coverage
 %endif
 
 %files
@@ -75,9 +77,9 @@ make PYTHON=%{__python3} test
 %files -n python3-kickstart
 %doc docs/2to3
 %doc docs/programmers-guide
-%doc docs/kickstart-docs.txt
+%doc docs/kickstart-docs.rst
 %{python3_sitelib}/pykickstart
-%{python3_sitelib}/pykickstart*.egg-info
+%{python3_sitelib}/pykickstart*.dist-info
 
 %changelog
 @CHANGELOG@

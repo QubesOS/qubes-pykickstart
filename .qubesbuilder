@@ -1,8 +1,11 @@
-host-fc37:
+host-fc41:
   rpm:
     build:
     - pykickstart.spec
 source:
   files:
-  - url: https://ftp.qubes-os.org/distfiles/pykickstart-3.41.tar.gz
-    sha512: pykickstart-3.41.tar.gz.sha512
+  - git-url: https://github.com/pykickstart/pykickstart.git
+    git-basename: pykickstart-@VERSION@
+    tag: r@VERSION@
+    pubkeys:
+    - bcl.asc
